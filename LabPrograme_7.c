@@ -166,5 +166,4 @@ exit(0);
 break;
 }
 }
-getch();
 }
