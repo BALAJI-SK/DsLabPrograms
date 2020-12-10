@@ -1,171 +1,170 @@
 #include<stdio.h>
-#include<malloc.h>
-
-struct node{
-	int num;
-	struct node *next;
+#include <conio.h>
+#include<stdlib.h>
+#include <process.h>
+struct node
+{
+int info;
+struct node *link;
 };
-
 typedef struct node *NODE;
-
-NODE getNode(){
-	NODE temp = (NODE)malloc(sizeof(struct node));
-	if(temp == NULL){
-		return NULL;
-	}
-	return temp;
+NODE getnode()
+{
+NODE x;
+x=(NODE)malloc(sizeof(struct node));
+if(x==NULL)
+{
+printf("memory full\n");
+exit(0);
+}
+return x;
+}
+void freenode(NODE x)
+{
+free(x);
+}
+NODE insert_front(NODE first,int item)
+{
+NODE temp;
+temp=getnode();
+temp->info=item;
+temp->link=NULL;
+if(first==NULL)
+return temp;
+temp->link=first;
+first=temp;
+return first;
 }
 
-void freeNode(NODE temp){
-	free(temp);
+NODE delete_front(NODE first)
+{
+NODE temp;
+if(first==NULL)
+{
+printf("list is empty cannot delete\n");
+return first;
 }
-
-NODE insertFront(NODE first){
-	NODE temp;
-	temp = getNode();
-	int num;
-	scanf("%d",&num);
-	temp->num = num;
-	temp->next = NULL;
-	if(first==NULL){
-		return temp;
-	}
-	temp->next = first;
-	first = temp;
-	return first;
+temp=first;
+temp=temp->link;
+printf("item deleted at front-end is= %d\n",first->info);
+free(first);
+return temp;
 }
-
-NODE deleteFront(NODE first){
-	NODE temp;
-	if(first==NULL){
-		printf("List is empty\n");
-		return NULL;
-	}
-	if(first->next == NULL){
-		printf("Deleted element = %d\n",first->num);
-		freeNode(first);
-		return NULL;
-	}
-	temp = first;
-	temp = temp->next;
-	printf("Deleted elements = %d\n",first->num);
-	freeNode(first);
-	return temp;
+NODE reverse(NODE first)
+ {
+ NODE cur,temp;
+ cur=NULL;
+ while(first!=NULL)
+  {
+   temp=first;
+   first=first->link;
+   temp->link=cur;
+   cur=temp;
+  }
+ return cur;
 }
-
-NODE sort(NODE first){
-	NODE curr,temp;
-	if(first==NULL){
-		return NULL;
-	}
-	curr = first;
-	while(curr!=NULL){
-		temp = curr->next;
-		while(temp!=NULL){
-			if(temp->num<curr->num){
-				int num = curr->num;
-				curr->num=temp->num;
-				temp->num = num;
-			}
-			temp = temp->next;
-		}
-		curr = curr->next;
-	}
-	return first;
+NODE concat(NODE first,NODE second)
+{
+ NODE cur;
+ if(first==NULL)
+  return second;
+ if(second==NULL)
+  return first;
+ cur=first;
+ while(cur->link!=NULL)
+  cur=cur->link;
+ cur->link=second;
+ return first;
 }
-
-void display(NODE first){
-	NODE curr;
-	if(first==NULL){
-		printf("List is empty\n");
-		return;
-	}
-	curr = first;
-	while(curr!=NULL){
-		printf("%d ",curr->num);
-		curr=curr->next;
-	}
-	printf("\n");
+void display(NODE first)
+{
+NODE temp;
+if(first==NULL)
+printf("list empty cannot display items\n");
+for(temp=first;temp!=NULL;temp=temp->link)
+{
+printf("%d\n",temp->info);
 }
-
-NODE reverse(NODE first){
-	NODE curr=NULL;
-	NODE temp = getNode();
-	while(first!=NULL){
-		temp = first;
-		first = first->next;
-		temp->next = curr;
-		curr = temp;
-		//printf("%d ",first->num);
-	}
-	return temp;
 }
+NODE sortList(NODE first) {
+        NODE current = first, index = NULL;
+        int temp;
 
-NODE concat(NODE first){
-	NODE sec = NULL;
-	int chq;
-	while(1){
-		printf("Enter the choice\n1-insertFront\n2-deleteFront\n3-display\n4-concat\n");
-		scanf("%d",&chq);
-		if(chq==4){
-			break;
-		}
-		switch(chq){
-			case 1:
-				sec = insertFront(sec);
-				break;
-			case 2:
-				sec = deleteFront(sec);
-				break;
-			case 3:
-				display(sec);
-				break;				
-		}
-	}
-	NODE curr;
-	if(first==NULL){
-		return sec;
-	}
-	if(sec==NULL){
-		return first;
-	}
-	curr = first;
-	while(curr->next!=NULL){
-		curr = curr->next;
-	}
-	curr->next = sec;
-	return first;
+        if(first == NULL) {
+        	printf("list is empty.");
+            return current;
+        }
+        else {
+            while(current != NULL) {
+
+                index = current->link;
+
+                while(index != NULL) {
+
+                    if(current->info > index->info) {
+                        temp = current->info;
+                        current->info = index->info;
+                        index->info = temp;
+                    }
+                    index = index->link;
+                }
+                current = current->link;
+            }
+			return current;
+        }
+    }
+void main()
+{
+int item,choice,pos,n,i;
+NODE first=NULL,a,b;
+for(;;)
+{
+printf("\n1:Insert_front\t2:Delete_front\t3:reverse_list\t4:Concate\t5:Sort\t6:display_list\t7:Exit\n");
+printf("enter the choice\n");
+scanf("%d",&choice);
+switch(choice)
+{
+case 1:printf("enter the item at front-end\n");
+scanf("%d",&item);
+first=insert_front(first,item);
+break;
+case 2:first=delete_front(first);
+break;
+case 3: first=reverse(first); display(first);break;
+ case 4:
+ if(first==NULL){
+ printf("enter the no of nodes in 1:");
+          scanf("%d",&n);
+          a=NULL;
+          for(i=0;i<n;i++)
+           {
+            printf("enter the item:");
+            scanf("%d",&item);
+            a=insert_front(a,item);
+          }}else{
+            a=first;
+          }
+           printf("enter the no of nodes in list2:");
+          scanf("%d",&n);
+          b=NULL;
+          for(i=0;i<n;i++)
+           {
+            printf("enter the item:");
+            scanf("%d",&item);
+            b=insert_front(b,item);
+           }
+           a=concat(a,b);
+           display(a);
+          break;
+case 5:sortList(first);
+  		 display(first);
+         break;
+case 6:display(first);
+break;
+default:for(;first->link!=NULL;first=first->link)free(first);
+exit(0);
+break;
 }
-
-int main(){
-	int chq;
-	NODE first = NULL;
-	while(1){
-		printf("Enter the choice\n1-insertFront\n2-deleteFront\n3-display\n4-sort\n5-reverse\n6-concat\n7-exit\n");
-		scanf("%d",&chq);
-		switch(chq){
-			case 1:
-				first = insertFront(first);
-				break;
-			case 2:
-				first = deleteFront(first);
-				break;
-			case 3:
-				display(first);
-				break;
-			case 4:
-				first = sort(first);
-				break;
-			case 5:
-				first = reverse(first);
-				break;
-			case 6:
-				printf("Creating the second list for concat\n");
-				concat(first);
-				break;
-			case 7:
-				return 0;
-			
-		}
-	}
+}
+getch();
 }
